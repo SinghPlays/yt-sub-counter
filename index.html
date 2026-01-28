@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Singh Plays Live - Sub Counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: #0b0b0b;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      text-align: center;
+      padding: 30px 40px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #111, #1a1a1a);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.25);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #ff2d2d;
+    }
+
+    .subs {
+      font-size: 56px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .goal {
+      font-size: 16px;
+      opacity: 0.85;
+    }
+
+    .remaining {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>Singh Plays Live</h1>
+    <div class="subs" id="subs">Loading...</div>
+    <div class="goal">🎯 Goal: 7,000 Subscribers</div>
+    <div class="remaining" id="remaining"></div>
+  </div>
+
+  <script>
+    const TARGET = 7000;
+
+    async function getSubs() {
+      try {
+        const res = await fetch(
+          "https://mixerno.space/api/youtube-channel-counter/user/singhplayslive"
+        );
+        const data = await res.json();
+
+        const subs = data.count;
+        document.getElementById("subs").innerText =
+          subs.toLocaleString();
+
+        const left = TARGET - subs;
+        document.getElementById("remaining").innerText =
+          left > 0
+            ? `🚀 ${left} subs to go!`
+            : `🎉 Goal Reached!`;
+
+      } catch (e) {
+        document.getElementById("subs").innerText = "Offline";
+      }
+    }
+
+    getSubs();
+    setInterval(getSubs, 10000); // refresh every 10 sec
+  </script>
+</body>
+</html>
